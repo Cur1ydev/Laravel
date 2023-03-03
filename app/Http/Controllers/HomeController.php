@@ -7,9 +7,12 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
+//use DB;
 class HomeController extends Controller
 {
+    protected $table="user";
     public function index()
     {
         echo "Đây là Home Controller";
@@ -39,5 +42,10 @@ class HomeController extends Controller
             "Content-Type" => "Application/pdf"
         ];
         return response()->download($file, $fullUrl, $headers);
+    }
+    public function indexDataBase(){
+
+       $user= DB::select('SELECT * FROM user WHERE name=?',['Lợi']);
+       dd($user);
     }
 }

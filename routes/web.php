@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Product\Dashboard;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Validation\ValidationController;
+use App\Http\Controllers\UserController;
 use function Termwind\render;
 
 /*
@@ -63,18 +64,15 @@ Route::get('/', function () {
     // return "Đây là trang chủ";
 })->name("home")->middleware("checkAdminLogin");
 Route::middleware("checkAdminLogin")->prefix("admin")->group(function () {
-    Route::get('/', [Dashboard::class, 'index']);
+//    Route::get('/', [Dashboard::class, 'index']);
+    Route::get('/', [UserController::class, 'index']);
     Route::view("/welcome", "form");
-    Route::get("/", function () {
-        return view("home");
-    })->name("home");
+//    Route::get("/", function () {
+//        return view("home");
+//    })->name("home");
     Route::prefix("product")->middleware("CheckPermission")->group(function () {
-        Route::get("/", function () {
-            return "Đây là Trang Chủ";
-        });
-        Route::get("/admin", function () {
-            return "Đây là Trang Admin";
-        });
+        Route::get("/",[UserController::class, 'index']);
+        Route::get("/add",[UserController::class, 'addItem']);
         Route::get("/front", function () {
             return "Đây là Trang Người dùng";
         });
@@ -157,9 +155,6 @@ Route::post('/demo-response', function (Request $request) {
     return redirect()->route('demo')->with('mess','Validate không thành công');
 });
 
-
-
-
 //response dạng download file
 Route::get('/download-img',function (){
     return view('img.downimg');
@@ -169,7 +164,7 @@ Route::get('/dowload-file',[HomeController::class,'downloadDoc']);
 
 //validation
 Route::get('/validation-add',[ValidationController::class,'index']);
-Route::post('/add-post',[ValidationController::class,'addPost']);
+Route::post('/validation-add',[ValidationController::class,'addPost'])->name('Postadd');
 // Route::get('/validation-add',function(){
 //     return view('validation.addvalidation');
 // });
@@ -177,4 +172,25 @@ Route::post('/add-post',[ValidationController::class,'addPost']);
 //     // return view('validation.addvalidation');
 //     echo 123;
 // });
+
+//Làm việc với database
+Route::get('/db',[HomeController::class,'indexDataBase']);
+//Route::get('/listUser',[UserController::class,'index']);
+//Route::prefix('/user')->name('user.')->group(function (){
+//    Route::get('/list',[UserController::class,'index']);
+//    Route::get('/add',[UserController::class,'addItem'])->name('add');
+//});
+//Route::get('/add',[UserController::class,'addItem'])->name('add');
+
+Route::prefix("product")->group(function () {
+    Route::get("/",[UserController::class, 'index'])->name('product.index');
+    Route::post("/",[UserController::class, 'index'])->name('product.index');
+    Route::get("/add",[UserController::class, 'addItem'])->name('product.add');
+    Route::post('/add',[UserController::class,'addPost'])->name('product.addPost');
+    Route::get("/update-{id}",[UserController::class, 'update'])->name('product.update');
+    Route::post('/update-{id}',[UserController::class,'updatePost'])->name('product.updatePost');
+    Route::get('/Delete-id-{id}',[UserController::class,'deleteItem'])->name('product.delete');
+
+});
+
 
