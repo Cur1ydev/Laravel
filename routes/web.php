@@ -192,5 +192,14 @@ Route::prefix("product")->group(function () {
     Route::get('/Delete-id-{id}',[UserController::class,'deleteItem'])->name('product.delete');
 
 });
+Route::prefix('/shopping-cart')->name('web.')->group(function (){
+    Route::get('/',function (){
+        return view('web.index');
+    })->name('home');
+
+    Route::get('/cart',function (){
+        return view('web.cart');
+    })->name('cart');
+});
 
 

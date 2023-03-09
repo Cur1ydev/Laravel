@@ -39,7 +39,7 @@
 @endif
 <h3>Danh sách Sản Phẩm</h3>
 <form action="" method="post" id="form">
-    <input type="text" name="key_search" id="" placeholder="Tìm kiếm gì đó ...">
+    <input type="text" name="key_search" id="" placeholder="Tìm kiếm gì đó ..." value="{{request()->key_search}}">
     <button name="btn_search">Search</button>
     @csrf
 </form>
